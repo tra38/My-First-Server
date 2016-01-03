@@ -1,7 +1,7 @@
 require_relative '../pages'
 require_relative '../server'
 
-RSpec.describe "Server" do
+RSpec.describe "Handler" do
 	before do
 		@sample_page = Page.new(
 		page: %{
