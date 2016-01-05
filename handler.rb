@@ -1,5 +1,5 @@
 class Handler
-  attr_reader :server, :client, :port, :pages
+  attr_reader :pages
   def initialize(array_of_pages, error_page)
     @pages = Hash.new(error_page)
     array_of_pages.each do |page|
