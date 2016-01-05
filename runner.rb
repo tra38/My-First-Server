@@ -36,7 +36,10 @@ profile = Page.new(
 	  <title>My Profile Page</title>
 	</head>
 	<body>
-	  <p>This is my profile page.</p>
+	  <p>This is my profile page. Username: Matt Baker</p>
+    <blockquote>Favorite Quote:
+    <br>
+    There is science, logic, reason; there is thought verified by experience.And then there is California. --Edward Abbey
 	</body>
 	</html>
 	},
@@ -48,5 +51,5 @@ server = Server.new(2000, [homepage, profile], error_page)
 loop do
 	server.start
 	server.send_message
-	server.stop	
+	server.stop
 end
