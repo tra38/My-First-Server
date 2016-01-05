@@ -1,25 +1,5 @@
 require 'socket'
-
-matt_baker_quote = %{User: Matt Baker
-	Favorite Quote:
-	There is science, logic, reason;
-	there is thought verified by experience.
-	And then there is California. --Edward Abbey}
-
-class Handler
-	attr_reader :server, :client, :port, :pages
-	def initialize(array_of_pages, error_page)
-		@pages = Hash.new(error_page)
-		array_of_pages.each do |page|
-			@pages[page.resource] = page
-		end
-	end
-
-	def page_routing(request)
-		@pages[request]
-	end
-
-end
+require_relative 'handler'
 
 class Server
 	attr_reader :server, :client, :port, :handler
