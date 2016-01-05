@@ -7,17 +7,16 @@ matt_baker_quote = %{User: Matt Baker
 	And then there is California. --Edward Abbey}
 
 class Handler
-	attr_reader :server, :client, :port, :pages, :error
+	attr_reader :server, :client, :port, :pages
 	def initialize(array_of_pages, error_page)
-		@pages = array_of_pages
-		@error = error_page
+		@pages = Hash.new(error_page)
+		array_of_pages.each do |page|
+			@pages[page.resource] = page
+		end
 	end
 
 	def page_routing(request)
-		pages.each do |page|
-			return page if page.resource == request
-		end
-		return error
+		@pages[request]
 	end
 
 end
