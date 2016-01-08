@@ -1,5 +1,6 @@
 require 'socket'
 require_relative 'handler'
+require_relative 'parser'
 
 class Server
 	attr_reader :server, :client, :port, :handler
@@ -20,8 +21,10 @@ class Server
 	end
 
 	def send_message
-		request = @client.gets.split(" ")[1]
-		page = handler.page_routing(request)
+		request = @client.gets
+		parser = Parser.new(request)
+		uri = parser.uri
+		page = handler.page_routing(uri)
 		@client.puts page.to_s
 	end
 
