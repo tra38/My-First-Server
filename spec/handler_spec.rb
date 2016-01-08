@@ -10,7 +10,11 @@ RSpec.describe "Handler" do
 			<title>Welcome</title>
 		</head>
 		<body>
+		<% if first && last %>
 			<h1>Hello %first %last!</h1>
+		<% else %>
+			<h1>Hello World!</h1>
+		<%end%>
 			<p>Welcome to the world's simplest Web Server.</p>
 			<p><img src='http://i.imgur.com/A3crbYQ.gif'></p>
 		</body>

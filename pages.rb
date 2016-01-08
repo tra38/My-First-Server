@@ -6,7 +6,7 @@ class Page
 		@code = args[:code]
 		@bytesize = @page.bytesize
 		@resource = args[:resource]
-		@default_parameters = args[:default_parameters] || {}
+		#@default_parameters = args[:default_parameters] || {}
 	end
 
 	def headers

@@ -1,3 +1,6 @@
+require 'erb'
+require 'ostruct'
+
 class Handler
   attr_reader :pages
   def initialize(array_of_pages, error_page)
@@ -7,11 +10,12 @@ class Handler
     end
   end
 
+#Elements of this code was inspired by tokland, from StackOverflow.
+#Source: http://stackoverflow.com/a/8293786
   def page_routing(request, parameters)
     page = @pages[request]
-    default_parameters = page.default_parameters
-    parameters = default_parameters.update(parameters)
-    response = page.to_s
+    namespace = OpenStruct.new(parameters)
+    response = ERB.new(page.to_s).result(namespace.instance_eval { binding })
     parameters.each do |key, value|
       response.gsub!("%"+key, value)
     end
@@ -19,3 +23,14 @@ class Handler
   end
 
 end
+
+# class TemplateEngine
+#   attr_reader :text, :parameters, :page
+
+#   def initialize(args)
+#     @namespace = args[:parameters]
+#     @text = args[:text]
+#     PARAMETERS = args[:parameters]
+#     @page = ERB.new(@text).result
+#   end
+# end
