@@ -23,14 +23,3 @@ class Handler
   end
 
 end
-
-# class TemplateEngine
-#   attr_reader :text, :parameters, :page
-
-#   def initialize(args)
-#     @namespace = args[:parameters]
-#     @text = args[:text]
-#     PARAMETERS = args[:parameters]
-#     @page = ERB.new(@text).result
-#   end
-# end
