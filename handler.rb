@@ -7,8 +7,15 @@ class Handler
     end
   end
 
-  def page_routing(request)
-    @pages[request]
+  def page_routing(request, parameters)
+    page = @pages[request]
+    default_parameters = page.default_parameters
+    parameters = default_parameters.update(parameters)
+    response = page.to_s
+    parameters.each do |key, value|
+      response.gsub!("%"+key, value)
+    end
+    response
   end
 
 end

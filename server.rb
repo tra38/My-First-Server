@@ -23,9 +23,10 @@ class Server
 	def send_message
 		request = @client.gets
 		parser = Parser.new(request)
-		uri = parser.uri
-		page = handler.page_routing(uri)
-		@client.puts page.to_s
+		resource = parser.resource
+		parameters = parser.parameters
+		response = handler.page_routing(resource, parameters)
+		@client.puts response
 	end
 
 end

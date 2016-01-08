@@ -14,7 +14,7 @@ homepage = Page.new(
 	</body>
 	</html>
 	},
-	code: 200, resource: "/home")
+	code: 200, resource: "/home", default_parameters: {"first" => "World!", "last" => ""})
 
 error_page = Page.new(
 	page: %{
