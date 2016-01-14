@@ -20,7 +20,7 @@ RSpec.describe "Handler" do
 		</body>
 		</html>
 		},
-		code: 200, resource: "/home"})
+		code: 200, resource: "/home")
 
 		@error_page = Page.new(
 			page: %{
