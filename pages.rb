@@ -1,12 +1,11 @@
 class Page
-	attr_reader :page, :code, :bytesize, :resource, :default_parameters
+	attr_reader :page, :code, :bytesize, :resource
 
 	def initialize(args)
 		@page = args[:page]
 		@code = args[:code]
 		@bytesize = @page.bytesize
 		@resource = args[:resource]
-		#@default_parameters = args[:default_parameters] || {}
 	end
 
 	def headers

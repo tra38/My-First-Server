@@ -20,7 +20,7 @@ RSpec.describe "Handler" do
 		</body>
 		</html>
 		},
-		code: 200, resource: "/home", default_parameters: {"first" => "World!", "last" => ""})
+		code: 200, resource: "/home"})
 
 		@error_page = Page.new(
 			page: %{
@@ -33,7 +33,7 @@ RSpec.describe "Handler" do
 		</body>
 		</html>
 		},
-		code: 404, resource: nil, default_parameters: {})
+		code: 404, resource: nil)
 
 		@handler = Handler.new([@sample_page], @error_page)
 	end
