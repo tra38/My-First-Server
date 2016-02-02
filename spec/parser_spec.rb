@@ -35,4 +35,16 @@ RSpec.describe "Parser" do
 
   end
 
+  context "handles invalid query strings" do
+    before do
+      request ="GET /home?first"
+      @parser = Parser.new(request)
+    end
+
+    it "returns default query parameters" do
+      expect(@parser.parameters).to eq({})
+    end
+
+  end
+
 end
