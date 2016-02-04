@@ -21,12 +21,26 @@ class Server
 	end
 
 	def send_message
-		request = @client.gets
-		parser = Parser.new(request)
+		request = get_headers
+		p request
+		parser = Parser.new(request[0])
 		resource = parser.resource
 		parameters = parser.parameters
 		response = handler.page_routing(resource, parameters)
 		@client.puts response
+	end
+
+	def get_headers
+		array = []
+		while true
+			line = @client.gets
+			break if line=="\r\n"
+			array << line
+		end
+		array.each do |sentence|
+			sentence.gsub!("\r\n","")
+		end
+		array
 	end
 
 end
