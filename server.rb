@@ -35,10 +35,7 @@ class Server
 		while true
 			line = @client.gets
 			break if line=="\r\n"
-			array << line
-		end
-		array.each do |sentence|
-			sentence.gsub!("\r\n","")
+			array << line.gsub("\r\n","")
 		end
 		array
 	end
