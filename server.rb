@@ -1,7 +1,7 @@
 require 'socket'
 require 'ostruct'
 require_relative 'handler'
-require_relative 'parser'
+require_relative 'uri_parser'
 
 class Server
 	attr_reader :server, :client, :port, :handler
@@ -24,9 +24,9 @@ class Server
 	def send_message
 		request = get_headers
 		p request
-		parser = Parser.new(request.uri)
-		resource = parser.resource
-		parameters = parser.parameters
+		uri_parser = URIParser.new(request.uri)
+		resource = uri_parser.resource
+		parameters = uri_parser.parameters
 		response = handler.page_routing(resource, parameters)
 		@client.puts response
 	end

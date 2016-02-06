@@ -1,12 +1,12 @@
-require_relative '../parser.rb'
+require_relative '../uri_parser.rb'
 
-RSpec.describe "Parser" do
+RSpec.describe "URI Parser" do
 
   context "deals with query strings" do
 
     before do
       request = "GET /home?first=Burt&last=Malkiel"
-      @parser = Parser.new(request)
+      @parser = URIParser.new(request)
     end
 
     it "returns the method of an URI" do
@@ -26,7 +26,7 @@ RSpec.describe "Parser" do
   context "deals with no query strings" do
     before do
       request = "GET /home"
-      @parser = Parser.new(request)
+      @parser = URIParser.new(request)
     end
 
     it "returns query parameters of an URI" do
@@ -38,7 +38,7 @@ RSpec.describe "Parser" do
   context "handles invalid query strings" do
     before do
       request ="GET /home?first"
-      @parser = Parser.new(request)
+      @parser = URIParser.new(request)
     end
 
     it "returns default query parameters" do

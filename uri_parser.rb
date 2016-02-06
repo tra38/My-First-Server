@@ -1,4 +1,4 @@
-class Parser
+class URIParser
   attr_reader :http_method, :resource, :parameters
 
   def initialize(request)
