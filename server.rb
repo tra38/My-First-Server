@@ -1,4 +1,5 @@
 require 'socket'
+require 'ostruct'
 require_relative 'handler'
 require_relative 'parser'
 
@@ -23,7 +24,7 @@ class Server
 	def send_message
 		request = get_headers
 		p request
-		parser = Parser.new(request[0])
+		parser = Parser.new(request.uri)
 		resource = parser.resource
 		parameters = parser.parameters
 		response = handler.page_routing(resource, parameters)
@@ -31,12 +32,16 @@ class Server
 	end
 
 	def get_headers
-		array = []
+		request = OpenStruct.new
+		request.uri = @client.gets.gsub("\r\n","")
 		@client.each_line do |line|
 			break if line == "\r\n"
-			array << line.gsub("\r\n","")
+			array = line.gsub("\r\n","").split(/: /)
+			key = array[0]
+			value = array[1]
+			request.send("#{key.downcase}=", value)
 		end
-		array
+		request
 	end
 
 end
