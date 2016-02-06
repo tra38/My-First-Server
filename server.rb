@@ -32,9 +32,8 @@ class Server
 
 	def get_headers
 		array = []
-		while true
-			line = @client.gets
-			break if line=="\r\n"
+		@client.each_line do |line|
+			break if line == "\r\n"
 			array << line.gsub("\r\n","")
 		end
 		array
