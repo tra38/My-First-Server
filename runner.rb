@@ -49,9 +49,22 @@ profile = Page.new(
 	},
 	code: 200, resource: "/profile")
 
+visits = Page.new(
+		page: %{
+			<html>
+			<head>
+				<title>Visit count</title>
+			</head>
+			<body>
+				<p>You have visited %count times.</p>
+			</body>
+			</html>
+			},
+		code: 200, resource:"/visits",
+		additional_headers: %{Set-Cookie: count=1})
 
-server = Server.new(2000, [homepage, profile], error_page)
-
+server = Server.new(2000, [homepage, profile, visits], error_page)
+puts "Server starting"
 loop do
 	server.start
 	server.send_message

@@ -12,11 +12,12 @@ class Handler
 
 #Elements of this code was inspired by tokland, from StackOverflow.
 #Source: http://stackoverflow.com/a/8293786
-  def page_routing(request, parameters)
+  def page_routing(request, parameters, cookie = {})
     page = @pages[request]
-    namespace = OpenStruct.new(parameters)
+    combined_hash = parameters.merge(cookie)
+    namespace = OpenStruct.new(combined_hash)
     response = ERB.new(page.to_s).result(namespace.instance_eval { binding })
-    parameters.each do |key, value|
+    combined_hash.each do |key, value|
       response.gsub!("%"+key, value)
     end
     response
