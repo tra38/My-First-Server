@@ -11,9 +11,22 @@ class Cookie
       array = key_value_pair.split("=")
       key = array[0]
       value = array[1]
+      # integer regex - http://stackoverflow.com/a/1235990/4765379
+      if (/\A[-+]?\d+\z/ === value)
+        value = value.to_i
+      end
       cookie_hash["#{key}"] = value
     end
     cookie_hash
   end
+
+  def headers
+    string = "Set-Cookie: "
+    hash.each do |key, value|
+      string << "#{key}=#{value};"
+    end
+    string
+  end
+
 
 end

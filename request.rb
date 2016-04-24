@@ -20,6 +20,7 @@ class Request
       value = array[1]
       headers["#{key.downcase}"] = "#{value}"
     end
+    puts headers
     headers
   end
 

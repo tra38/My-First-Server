@@ -61,7 +61,7 @@ visits = Page.new(
 			</html>
 			},
 		code: 200, resource:"/visits",
-		additional_headers: %{Set-Cookie: count=1})
+		cookie_modifiers: ["@hash['count'] += 1"])
 
 server = Server.new(2000, [homepage, profile, visits], error_page)
 puts "Server starting"

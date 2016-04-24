@@ -1,11 +1,13 @@
 class Page
-	attr_reader :page, :code, :bytesize, :resource, :additional_headers
+	attr_reader :page, :code, :bytesize, :resource, :cookie_modifiers
+	attr_accessor :additional_headers
 
 	def initialize(args)
 		@page = args[:page]
 		@code = args[:code]
 		@resource = args[:resource]
 		@additional_headers = args[:additional_headers]
+		@cookie_modifiers = args[:cookie_modifiers]
 	end
 
 	def headers
@@ -20,4 +22,5 @@ class Page
 	def to_s
 		"#{headers}\r\n#{page}\nTime is #{Time.now}"
 	end
+
 end

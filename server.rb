@@ -26,15 +26,13 @@ class Server
 		request = Request.new(client)
 		uri_parser = URIParser.new(request.uri)
 		if request.headers["cookie"]
-			cookie_hash = Cookie.new(request.headers["cookie"]).hash
-			puts "#{cookie_hash}"
+			cookie = Cookie.new(request.headers["cookie"])
 		else
-			cookie_hash = {}
-			puts "No cookie sadly"
+			cookie = Cookie.new("count=0;")
 		end
 		resource = uri_parser.resource
 		parameters = uri_parser.parameters
-		response = handler.page_routing(resource, parameters, cookie_hash)
+		response = handler.page_routing(resource, parameters, cookie)
 		puts response
 		@client.puts response
 	end
