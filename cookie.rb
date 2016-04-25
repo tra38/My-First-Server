@@ -15,7 +15,7 @@ class Cookie
       if (/\A[-+]?\d+\z/ === value)
         value = value.to_i
       end
-      cookie_hash["#{key}"] = value
+      cookie_hash["#{key}"] = value unless key == "rack.session"
     end
     cookie_hash
   end
