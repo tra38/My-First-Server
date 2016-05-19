@@ -63,7 +63,29 @@ visits = Page.new(
 		code: 200, resource:"/visits",
 		cookie_modifiers: ["@hash['count'] += 1"])
 
-server = Server.new(2000, [homepage, profile, visits], error_page)
+login = Page.new(
+	page: %{
+		<html>
+		<head>
+			<title>Login!</title>
+		<body>
+			<% if loggedIn %>
+				You are ready to RSPEC RAILS!
+			<%else%>
+				Try again later.
+			<%end%>
+		</body>
+		</html>
+		},
+		code: 200, resource: "/login",
+		parameter_modifiers: ["
+			if (parameters['user'] == 'mattBaker' && parameters['password'] == 'California')
+				parameters['loggedIn'] = true
+			else
+				parameters['loggedIn'] = false
+			end"])
+
+server = Server.new(2000, [homepage, profile, visits, login], error_page)
 puts "Server starting"
 loop do
 	server.start

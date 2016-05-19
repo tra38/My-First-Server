@@ -36,7 +36,30 @@ RSpec.describe "Handler" do
 		},
 		code: 404, resource: nil)
 
-		@handler = Handler.new([@sample_page], @error_page)
+
+		@login_page = Page.new(
+		page: %{
+			<html>
+			<head>
+				<title>Login!</title>
+			<body>
+				<% if loggedIn %>
+					You are ready to RSPEC RAILS!
+				<%else%>
+					Try again later.
+				<%end%>
+			</body>
+			</html>
+			},
+			code: 200, resource: "/login",
+			parameter_modifiers: ["
+				if (parameters['user'] == 'mattBaker' && parameters['password'] == 'California')
+					parameters['loggedIn'] = true
+				else
+					parameters['loggedIn'] = false
+				end"])
+
+		@handler = Handler.new([@sample_page, @login_page], @error_page)
 
 		@cookie = Cookie.new("count=1")
 	end
@@ -60,6 +83,16 @@ RSpec.describe "Handler" do
 	 	page = @handler.page_routing("/unknown", {}, @cookie)
 	 	expect(page.to_s).to match /HTTP\/1.1 404/
 	 	expect(page.to_s).to match /my 404 error page/
+	 end
+
+	 it "allows users to login" do
+	 	page = @handler.page_routing("/login", {"user" => "mattBaker", "password" => "California" }, @cookie)
+	 	expect(page.to_s).to match /You are ready to RSPEC RAILS!/
+	 end
+
+	 it "prevents users from logging in" do
+	 	page = @handler.page_routing("/login", {"user" => "mattBaker", "password" => "" }, @cookie)
+	 	expect(page.to_s).to match /Try again later./
 	 end
 
 end
