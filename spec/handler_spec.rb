@@ -1,5 +1,6 @@
 require_relative '../pages'
 require_relative '../server'
+require_relative '../cookie'
 
 RSpec.describe "Handler" do
 	before do
@@ -36,10 +37,12 @@ RSpec.describe "Handler" do
 		code: 404, resource: nil)
 
 		@handler = Handler.new([@sample_page], @error_page)
+
+		@cookie = Cookie.new("count=1")
 	end
 
 	 it "displays /home, without query parameters " do
-	 	page = @handler.page_routing("/home", {})
+	 	page = @handler.page_routing("/home", {}, @cookie)
 	 	expect(page.to_s).to match /HTTP\/1.1 200/
 	 	expect(page.to_s).to match /simplest Web Server/
 	 	expect(page.to_s).to match /Hello World!/
@@ -47,14 +50,14 @@ RSpec.describe "Handler" do
 
 	 it "displays /home, with query parameters" do
 	 	query_parameters = { "first" => "Burt", "last" => "Malkiel"}
-	 	page = @handler.page_routing("/home", query_parameters)
+	 	page = @handler.page_routing("/home", query_parameters, @cookie)
 	 	expect(page.to_s).to match /HTTP\/1.1 200/
 	 	expect(page.to_s).to match /simplest Web Server/
 	 	expect(page.to_s).to match /Hello Burt Malkiel!/
 	 end
 
 	 it "displays error page" do
-	 	page = @handler.page_routing("/unknown", {})
+	 	page = @handler.page_routing("/unknown", {}, @cookie)
 	 	expect(page.to_s).to match /HTTP\/1.1 404/
 	 	expect(page.to_s).to match /my 404 error page/
 	 end
