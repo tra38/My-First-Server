@@ -30,6 +30,9 @@ class Server
 		else
 			cookie = Cookie.new("count=0;")
 		end
+		unless cookie.hash["count"]
+			cookie.hash["count"] = 0
+		end
 		resource = uri_parser.resource
 		parameters = uri_parser.parameters
 		response = handler.page_routing(resource, parameters, cookie)
