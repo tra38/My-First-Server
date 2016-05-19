@@ -21,9 +21,14 @@ class Cookie
   end
 
   def headers
-    string = "Set-Cookie: "
+    string = ""
+    last_key = hash.keys.last
     hash.each do |key, value|
-      string << "#{key}=#{value};"
+      if key == last_key
+        string << "Set-Cookie: #{key}=#{value}"
+      else
+        string << "Set-Cookie: #{key}=#{value}\r\n"
+      end
     end
     string
   end
