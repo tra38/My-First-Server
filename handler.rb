@@ -14,8 +14,7 @@ class Handler
 #Source: http://stackoverflow.com/a/8293786
   def page_routing(request, parameters, cookie)
     page = @pages[request]
-    modify_cookie(page.cookie_modifiers, cookie) if page.cookie_modifiers
-    modify_parameters(page.parameter_modifiers, parameters) if page.parameter_modifiers
+    modify_states(cookie.hash, parameters, page.modifiers) if page.modifiers
     page.additional_headers = cookie.headers
     combined_hash = parameters.merge(cookie.hash)
     namespace = OpenStruct.new(combined_hash)
@@ -26,15 +25,10 @@ class Handler
     response
   end
 
-  def modify_cookie(cookie_modifiers, cookie)
-    cookie_modifiers.each do |command|
-      cookie.instance_eval(command)
-    end
-  end
-
-  def modify_parameters(parameter_modifiers, parameters)
-    parameter_modifiers.each do |command|
-      parameters.instance_eval(command)
+  private
+  def modify_states(cookie_hash, parameters, modifiers)
+    modifiers.each do |command|
+      self.instance_eval(command)
     end
   end
 

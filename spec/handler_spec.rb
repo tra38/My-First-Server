@@ -52,7 +52,7 @@ RSpec.describe "Handler" do
 			</html>
 			},
 			code: 200, resource: "/login",
-			parameter_modifiers: ["
+			modifiers: ["
 				if (parameters['user'] == 'mattBaker' && parameters['password'] == 'California')
 					parameters['loggedIn'] = true
 				else

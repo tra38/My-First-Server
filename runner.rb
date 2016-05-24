@@ -61,7 +61,7 @@ visits = Page.new(
 			</html>
 			},
 		code: 200, resource:"/visits",
-		cookie_modifiers: ["@hash['count'] += 1"])
+		modifiers: ["cookie_hash['count'] += 1"])
 
 login = Page.new(
 	page: %{
@@ -78,7 +78,7 @@ login = Page.new(
 		</html>
 		},
 		code: 200, resource: "/login",
-		parameter_modifiers: ["
+		modifiers: ["
 			if (parameters['user'] == 'mattBaker' && parameters['password'] == 'California')
 				parameters['loggedIn'] = true
 			else

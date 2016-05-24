@@ -1,5 +1,5 @@
 class Page
-	attr_reader :page, :code, :bytesize, :resource, :cookie_modifiers, :parameter_modifiers
+	attr_reader :page, :code, :bytesize, :resource, :modifiers
 	attr_accessor :additional_headers
 
 	def initialize(args)
@@ -7,8 +7,7 @@ class Page
 		@code = args[:code]
 		@resource = args[:resource]
 		@additional_headers = args[:additional_headers]
-		@cookie_modifiers = args[:cookie_modifiers]
-		@parameter_modifiers = args[:parameter_modifiers]
+		@modifiers = args[:modifiers]
 	end
 
 	def headers
