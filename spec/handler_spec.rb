@@ -1,6 +1,7 @@
 require_relative '../pages'
 require_relative '../server'
 require_relative '../cookie'
+require_relative '../users'
 
 RSpec.describe "Handler" do
 	before do
@@ -53,7 +54,9 @@ RSpec.describe "Handler" do
 			},
 			code: 200, resource: "/login",
 			modifiers: ["
-				if (parameters['user'] == 'mattBaker' && parameters['password'] == 'California')
+				username = parameters['user']
+				user_account = USER_TABLE[username]
+				if (user_account && user_account.password == parameters['password'])
 					parameters['loggedIn'] = true
 				else
 					parameters['loggedIn'] = false

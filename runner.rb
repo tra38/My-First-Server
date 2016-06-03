@@ -1,5 +1,6 @@
 require_relative 'server'
 require_relative 'pages'
+require_relative 'users'
 
 homepage = Page.new(
 	page: %{
@@ -56,7 +57,7 @@ visits = Page.new(
 				<title>Visit count</title>
 			</head>
 			<body>
-				<p>You have visited %count times.</p>
+				<p>You have visited %count times using this specific browser.</p>
 			</body>
 			</html>
 			},
@@ -79,7 +80,9 @@ login = Page.new(
 		},
 		code: 200, resource: "/login",
 		modifiers: ["
-			if (parameters['user'] == 'mattBaker' && parameters['password'] == 'California')
+			username = parameters['user']
+			user_account = USER_TABLE[username]
+			if (user_account && user_account.password == parameters['password'])
 				parameters['loggedIn'] = true
 			else
 				parameters['loggedIn'] = false
