@@ -58,11 +58,20 @@ visits = Page.new(
 			</head>
 			<body>
 				<p>You have visited %count times using this specific browser.</p>
+			<% if user_id %>
+				<p>When logged into this account, you visited %user_visits times, using different browsers.</P>
+			<%end%>
 			</body>
 			</html>
 			},
 		code: 200, resource:"/visits",
-		modifiers: ["cookie_hash['count'] += 1"])
+		modifiers: ["cookie_hash['count'] += 1;
+			user_account = User.find_by_user_id(cookie_hash['user_id'])
+			if user_account
+				user_account.visits += 1
+				cookie_hash['user_visits'] = user_account.visits
+			end
+		"])
 
 login = Page.new(
 	page: %{
@@ -83,6 +92,7 @@ login = Page.new(
 			username = parameters['user']
 			user_account = USER_TABLE[username]
 			if (user_account && user_account.password == parameters['password'])
+				cookie_hash['user_id'] = user_account.user_id
 				parameters['loggedIn'] = true
 			else
 				parameters['loggedIn'] = false
