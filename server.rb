@@ -35,7 +35,8 @@ class Server
 		end
 		resource = uri_parser.resource
 		parameters = uri_parser.parameters
-		response = handler.page_routing(resource, parameters, cookie)
+		http_method = uri_parser.http_method
+		response = handler.page_routing(resource, http_method, parameters, cookie)
 		puts response
 		@client.puts response
 	end

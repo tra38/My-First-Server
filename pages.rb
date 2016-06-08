@@ -1,9 +1,10 @@
 class Page
-	attr_reader :page, :code, :bytesize, :resource, :modifiers
+	attr_reader :page, :code, :bytesize, :resource, :modifiers, :http_method
 	attr_accessor :additional_headers
 
 	def initialize(args)
 		@page = args[:page]
+		@http_method = args[:http_method]
 		@code = args[:code]
 		@resource = args[:resource]
 		@additional_headers = args[:additional_headers]

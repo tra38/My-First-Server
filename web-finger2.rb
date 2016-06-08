@@ -92,4 +92,4 @@ LOGIN_PAGE = Page.new(
         parameters['loggedIn'] = true
       else
         parameters['loggedIn'] = false
-      end"], http_method: "GET")
+      end"], http_method: "POST")
