@@ -69,7 +69,7 @@ VISITS = Page.new(
       end
     "], http_method: "GET")
 
-LOGIN_PAGE = Page.new(
+LOGIN_PAGE_POST = Page.new(
   page: %{
     <html>
     <head>
@@ -93,3 +93,24 @@ LOGIN_PAGE = Page.new(
       else
         parameters['loggedIn'] = false
       end"], http_method: "POST")
+
+LOGIN_PAGE_GET = Page.new(
+  page: %{
+    <html>
+    <head>
+      <title>Let's Login!</title>
+    </head>
+    <body>
+      For years, people have always asked for a form. After a billion dollars in investment, we have finally created a login form, and moved our website to the 1990s! So today, let's login!
+      <form>
+        <label for="user">Username</label>
+        <input type="text" name="user">
+        <label for="password">Super-Secret Password</label>
+        <input type="password" name="password">
+        <input type="submit" value="Submit">
+      </form>
+    </body>
+  </html>
+  }, code:200, resource: "/login",
+  http_method: "GET"
+  )

@@ -6,7 +6,7 @@ require_relative '../web-finger2'
 
 RSpec.describe "Handler" do
 	before do
-		@handler = Handler.new([HOMEPAGE, LOGIN_PAGE], ERROR_PAGE)
+		@handler = Handler.new([HOMEPAGE, LOGIN_PAGE_GET, LOGIN_PAGE_POST], ERROR_PAGE)
 		@cookie = Cookie.new("count=1")
 	end
 
@@ -41,9 +41,9 @@ RSpec.describe "Handler" do
 	 	expect(page.to_s).to match /Try again later./
 	 end
 
-	 it "stops the user login process if the user sends the wrong HTTP Method" do
+	 it "provides the user with a form, if the user login process sends a GET Method" do
 	 	page = @handler.page_routing("/login", "GET", {"user" => "mattBaker", "password" => "" }, @cookie)
-	 	expect(page.to_s).to match /my 404 error page/
+	 	expect(page.to_s).to match /let's login/
 	 end
 
 end
