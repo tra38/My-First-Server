@@ -41,7 +41,7 @@ RSpec.describe "Handler" do
 	 	expect(page.to_s).to match /Try again later./
 	 end
 
-	 it "provides the user with a form, if the user login process sends a GET Method" do
+	 it "provides the user with a form, if the user sends a GET Method" do
 	 	page = @handler.page_routing("/login", "GET", {"user" => "mattBaker", "password" => "" }, @cookie)
 	 	expect(page.to_s).to match /let's login/
 	 end
