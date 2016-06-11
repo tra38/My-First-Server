@@ -20,8 +20,19 @@ class Request
       value = array[1]
       headers["#{key.downcase}"] = "#{value}"
     end
+    content_length = headers["content-length"].to_i
+    if (content_length > 0)
+      headers["content"] = extract_content(client, content_length)
+    end
     puts headers
     headers
+  end
+
+# http://stackoverflow.com/questions/24656175/how-do-i-read-a-in-incoming-post-multipart-request-using-ruby-and-tcpserver
+# Will need to study the 'recv' method  more carefully to figure out why I need to specify the content_length instead of trying to
+# read everything, line by line
+  def extract_content(client, content_length)
+    client.recv(content_length)
   end
 
 

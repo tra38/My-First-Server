@@ -102,7 +102,7 @@ LOGIN_PAGE_GET = Page.new(
     </head>
     <body>
       For years, people have always asked for a form. After a billion dollars in investment, we have finally created a login form, and moved our website to the 1990s! So today, let's login!
-      <form>
+      <form action="/login" method="POST">
         <label for="user">Username</label>
         <input type="text" name="user">
         <label for="password">Super-Secret Password</label>
