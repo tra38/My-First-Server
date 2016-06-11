@@ -1,12 +1,24 @@
-class URIParser
+class Parser
   attr_reader :http_method, :resource, :parameters
 
   def initialize(request)
-    request = request.split(" ")
-    @http_method = request[0]
-    query = request[1].split("?")
+    uri = uri_parse(request)
+    @http_method = uri[0]
+    query = uri[1].split("?")
     @resource = query[0]
-    @parameters = hashify(query[1])
+    handle_parameters(request, query)
+  end
+
+  def uri_parse(request)
+    request.uri.split(" ")
+  end
+
+  def handle_parameters(request, query)
+    if @http_method == "POST"
+      @parameters = hashify(request.headers["content"])
+    else
+      @parameters = hashify(query[1])
+    end
   end
 
   def hashify(parameters)

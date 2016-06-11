@@ -1,6 +1,6 @@
 require 'socket'
 require_relative 'handler'
-require_relative 'uri_parser'
+require_relative 'parser'
 require_relative 'request'
 require_relative 'cookie'
 
@@ -24,7 +24,7 @@ class Server
 
 	def send_message
 		request = Request.new(client)
-		uri_parser = URIParser.new(request.uri)
+		parser = Parser.new(request)
 		if request.headers["cookie"]
 			cookie = Cookie.new(request.headers["cookie"])
 		else
@@ -33,9 +33,9 @@ class Server
 		unless cookie.hash["count"]
 			cookie.hash["count"] = 0
 		end
-		resource = uri_parser.resource
-		parameters = uri_parser.parameters
-		http_method = uri_parser.http_method
+		resource = parser.resource
+		parameters = parser.parameters
+		http_method = parser.http_method
 		response = handler.page_routing(resource, http_method, parameters, cookie)
 		puts response
 		@client.puts response
