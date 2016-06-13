@@ -27,7 +27,7 @@ class Parser
       paramater_array = parameters.split("&")
       paramater_array.each do |key_value_pair|
         key, value = key_value_pair.split("=")
-        parameter_hash[key] = value unless value == nil
+        parameter_hash[key] = CGI.unescape(value) unless value == nil
       end
     end
     parameter_hash

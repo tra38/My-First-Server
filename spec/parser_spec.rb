@@ -62,4 +62,15 @@ RSpec.describe "Parser" do
     end
   end
 
+  context "Handle URI encoding" do
+    before do
+      request = instance_double("Request", :uri => "GET /home?first=foobar&last=%261234%26")
+      @parser = Parser.new(request)
+    end
+
+    it "can successfully decode URI encoded strings" do
+      expect(@parser.parameters).to eq({ "first" => "foobar", "last" => "&1234&"})
+    end
+  end
+
 end

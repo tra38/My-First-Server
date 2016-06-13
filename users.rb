@@ -31,4 +31,6 @@ end
 
 User.create_user("mattBaker", "California")
 
+User.create_user("foobar", "&1234&")
+
 # Should I use IDs to keep track of users? Or should I store the username and password directly into the cookie? Do I store the entire user object into the Cookie itself? Serializing the object? Ugh.
