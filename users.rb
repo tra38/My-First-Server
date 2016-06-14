@@ -5,16 +5,18 @@ USER_TABLE = {}
 class User
   attr_accessor :visits
   attr_reader :password
+  attr_reader :username
   attr_reader :user_id
 
-  def initialize(password)
+  def initialize(username, password)
     @visits = 0
     @password = password
+    @username = username
     @user_id = SecureRandom.uuid
   end
 
   def self.create_user(username, password)
-    user = User.new(password)
+    user = User.new(username, password)
     USER_TABLE[username] = user
   end
 
