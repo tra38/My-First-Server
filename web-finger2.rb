@@ -34,17 +34,34 @@ PROFILE = Page.new(
   page: %{
   <html>
   <head>
-    <title>My Profile Page</title>
+    <% if username %>
+      <title><%= username %>'s Profile Page</title>
+    <%else%>
+      <title>Profile Page</title>
+    <%end%>
   </head>
   <body>
+  <%if username %>
+    Hello <%= username %>!
     <p>This is my profile page. Username: Matt Baker</p>
     <blockquote>Favorite Quote:
     <br>
     There is science, logic, reason; there is thought verified by experience.And then there is California. --Edward Abbey
+  <%else%>
+    You are not logged in. We're redirecting you to /login!
+    <script>
+      window.location.href = "http://localhost:2000/login"
+    </script>
+  <%end%>
   </body>
   </html>
   },
-  code: 200, resource: "/profile", http_method: "GET")
+  code: 200, resource: "/profile",
+  modifiers: ["
+    user_account = User.find_by_user_id(cookie_hash['user_id'])
+    if user_account
+      parameters['username'] = user_account.username
+    end"],http_method: "GET")
 
 VISITS = Page.new(
     page: %{
