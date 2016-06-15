@@ -32,7 +32,7 @@ class Request
 # Will need to study the 'recv' method  more carefully to figure out why I need to specify the content_length instead of trying to
 # read everything, line by line
   def extract_content(client, content_length)
-    client.recv(content_length)
+    client.recv_nonblock(content_length)
   end
 
 
