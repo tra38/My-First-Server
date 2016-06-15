@@ -1,6 +1,5 @@
 require 'erb'
 require 'ostruct'
-require 'pry'
 
 class Handler
   attr_reader :pages
@@ -17,15 +16,20 @@ class Handler
 #Source: http://stackoverflow.com/a/8293786
   def page_routing(request, http_method, parameters, cookie)
     page = @pages[http_method][request]
-    modify_states(cookie.hash, parameters, page.modifiers) if page.modifiers
-    page.additional_headers = cookie.headers
-    combined_hash = parameters.merge(cookie.hash)
-    namespace = OpenStruct.new(combined_hash)
-    response = ERB.new(page.to_s).result(namespace.instance_eval { binding })
-    combined_hash.each do |key, value|
-      response.gsub!("%"+key, value.to_s)
+    if page.redirect?(cookie.hash)
+      page.redirect_headers
+    else
+      binding.pry
+      modify_states(cookie.hash, parameters, page.modifiers) if page.modifiers
+      page.additional_headers = cookie.headers
+      combined_hash = parameters.merge(cookie.hash)
+      namespace = OpenStruct.new(combined_hash)
+      response = ERB.new(page.to_s).result(namespace.instance_eval { binding })
+      combined_hash.each do |key, value|
+        response.gsub!("%"+key, value.to_s)
+      end
+      response
     end
-    response
   end
 
   private

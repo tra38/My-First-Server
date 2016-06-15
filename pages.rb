@@ -1,5 +1,5 @@
 class Page
-	attr_reader :page, :code, :bytesize, :resource, :modifiers, :http_method
+	attr_reader :page, :code, :bytesize, :resource, :modifiers, :http_method, :redirect_criteria, :redirect_url
 	attr_accessor :additional_headers
 
 	def initialize(args)
@@ -9,6 +9,8 @@ class Page
 		@resource = args[:resource]
 		@additional_headers = args[:additional_headers]
 		@modifiers = args[:modifiers]
+		@redirect_criteria = args[:redirect_criteria]
+		@redirect_url = args[:redirect_url]
 	end
 
 	def headers
@@ -17,6 +19,21 @@ class Page
 		headers_array << "Content Type: text/html"
 		headers_array << additional_headers if additional_headers
 		headers_array << "Connection: close"
+		headers_array.join("\r\n")
+	end
+
+	def redirect?(cookie_hash)
+		if redirect_criteria
+			self.instance_eval(redirect_criteria)
+		else
+			false
+		end
+	end
+
+	def redirect_headers
+		headers_array = []
+		headers_array << "HTTP/1.1 303 See Other"
+		headers_array << "Location: #{redirect_url}"
 		headers_array.join("\r\n")
 	end
 
