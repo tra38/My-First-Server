@@ -12,10 +12,15 @@ HOMEPAGE = Page.new(
   <%end%>
     <p>Welcome to the world's simplest Web Server.</p>
     <p><img src='http://i.imgur.com/A3crbYQ.gif'></p>
+    <ul>
+      %user_list
+    </ul>
   </body>
   </html>
   },
-  code: 200, resource: "/home", http_method: "GET")
+  code: 200, resource: "/home", http_method: "GET",
+  modifiers: [%{
+    parameters['user_list'] = USER_TABLE.map { |key, value| "<li>" + value.username + "</li>" }.join('') }])
 
 ERROR_PAGE = Page.new(
   page: %{
