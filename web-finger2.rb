@@ -68,7 +68,7 @@ VISITS = Page.new(
       </head>
       <body>
         <p>You have visited %count times using this specific browser.</p>
-      <% if user_id %>
+      <% if loggedIn %>
         <p>When logged into this account, you visited %user_visits times, using different browsers.</P>
       <%end%>
       </body>
@@ -78,6 +78,7 @@ VISITS = Page.new(
     modifiers: ["cookie_hash['count'] += 1;
       user_account = User.find_by_user_id(cookie_hash['user_id'])
       if user_account
+        parameters['loggedIn'] = true
         user_account.visits += 1
         cookie_hash['user_visits'] = user_account.visits
       end
