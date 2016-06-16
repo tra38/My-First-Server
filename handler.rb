@@ -19,7 +19,6 @@ class Handler
     if page.redirect?(cookie.hash)
       page.redirect_headers
     else
-      binding.pry
       modify_states(cookie.hash, parameters, page.modifiers) if page.modifiers
       page.additional_headers = cookie.headers
       combined_hash = parameters.merge(cookie.hash)
