@@ -129,3 +129,49 @@ LOGIN_PAGE_GET = Page.new(
   }, code:200, resource: "/login",
   http_method: "GET"
   )
+
+REGISTER_PAGE_GET = Page.new(
+  page: %{
+    <html>
+      <head><title>Register</title></head>
+      <body>
+      Here is a form that will allow you to make an account. 
+      <form action="/register" method="POST">
+        <label for="user">Username</label>
+        <input type="text" name="user">
+        <label for="password">Super-Secret Password</label>
+        <input type="password" name="password">
+        <input type="submit" value="Submit">
+      </form>
+    </html>
+    }, code: 200, resource: "/register",
+    http_method: "GET"
+    )
+
+REGISTER_PAGE_POST = Page.new(
+  page: %{
+    <html>
+    <head>
+    <% if registered %>
+      <title>REGISTERED!</title>
+    <%else%>
+      <title>SORRY!</title>
+    <%end%>
+    </head>
+    <body>
+      <% if registered %>
+        You are now registered! Please login using your new username and password!
+      <% else %>
+        The username was already taken. Please try again later.
+      <%end%>
+    }, code: 200, resource: "/register",
+    modifiers: ["
+      username = parameters['user']
+      user_account = USER_TABLE[username]
+      if user_account
+        parameters['registered'] = false
+      else
+        User.create_user(parameters['user'], parameters['password'])
+        parameters['registered'] = true
+      end
+    "],  http_method: "POST")
