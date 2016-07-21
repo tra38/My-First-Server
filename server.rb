@@ -28,7 +28,8 @@ class Server
 		if request.headers["cookie"]
 			cookie = Cookie.new(request.headers["cookie"])
 		else
-			cookie = Cookie.new("count=0;")
+			encrypted_cookie = "FirstServerCookie=#{CIPHER.encrypt("count=0;")};"
+			cookie = Cookie.new(encrypted_cookie)
 		end
 		unless cookie.hash["count"]
 			cookie.hash["count"] = 0

@@ -1,3 +1,5 @@
+require 'gibberish'
+
 HOMEPAGE = Page.new(
   page: %{
   <html>
@@ -180,3 +182,6 @@ REGISTER_PAGE_POST = Page.new(
         parameters['registered'] = true
       end
     "],  http_method: "POST")
+
+SECRET_KEY = "my secret key"
+CIPHER = Gibberish::AES.new(SECRET_KEY)
