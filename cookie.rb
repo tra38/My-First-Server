@@ -27,7 +27,7 @@ class Cookie
     last_key = hash.keys.last
     hash.each do |key, value|
       if key == last_key
-        string << "#{key}=#{value};"
+        string << "#{key}=#{value}"
       else
         string << "#{key}=#{value}; "
       end
