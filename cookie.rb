@@ -10,7 +10,7 @@ class Cookie
   def process(cookie_string)
     normal_cookie_hash = interpret_cookie_string(cookie_string)
     if normal_cookie_hash["FirstServerCookie"]
-      our_actual_cookie = CIPHER.decrypt(Base64.decode64(normal_cookie_hash["FirstServerCookie"]))
+      our_actual_cookie = decrypt_cookie(normal_cookie_hash["FirstServerCookie"])
       final_cookie_hash = interpret_cookie_string(our_actual_cookie)
     else
       # construct brand new cookie_hash that will unify the prexisting cookie variables into a more 'secure' cookie, with a whitelist of variables
@@ -50,6 +50,13 @@ class Cookie
       hash["#{key}"] = value
     end
     hash
+  end
+
+  def decrypt_cookie(cookie_string)
+    base64_cookie = Base64.decode64(cookie_string)
+    CIPHER.decrypt(base64_cookie)
+  rescue
+    "count=0"
   end
 
 
