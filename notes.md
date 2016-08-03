@@ -15,3 +15,16 @@ My solution and Rails 4' solution both uses AES-256 encryption.
 XSS attacks can occur when you do not properly filter user input. If users are allowed to inject artibrary HTML into their websites, they can use it to do *bad* stuff. Such as steal people's cookies.
 
 Ruby has a method ["CGI::escapeHTML"](http://ruby-doc.org/stdlib-2.0.0/libdoc/cgi/rdoc/CGI.html#method-c-escapeHTML) that can handle this specific issue, and I called it on every section where I expect user input. Rails is much easier in that HTML escaping occurs by default, and you have to intentionally opt-out of it by using the 'html_safe' method.
+
+
+== Cookie Necessary To Steal Cookies ==
+```javascript
+//Source: http://stackoverflow.com/a/21125098
+function getCookie(name) {
+  match = document.cookie.match(new RegExp(name + '=([^;]+)'));
+  if (match) return match[1];
+}
+
+console.log("Here is our stolen cookie...mwahaha")
+console.log(getCookie("FirstServerCookie"));
+```
