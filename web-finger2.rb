@@ -1,10 +1,12 @@
 require 'gibberish'
+require 'cgi'
 
 HOMEPAGE = Page.new(
   page: %{
   <html>
   <head>
     <title>Welcome</title>
+    <meta http-equiv="refresh" content="10">
   </head>
   <body>
   <% if first && last %>
@@ -22,7 +24,7 @@ HOMEPAGE = Page.new(
   },
   code: 200, resource: "/home", http_method: "GET",
   modifiers: [%{
-    parameters['user_list'] = USER_TABLE.map { |key, value| "<li>" + value.username + "</li>" }.join('') }])
+    parameters['user_list'] = USER_TABLE.map { |key, value| "<li>" + CGI::escapeHTML(value.username) + "</li>" }.join('') }])
 
 ERROR_PAGE = Page.new(
   page: %{
@@ -64,7 +66,7 @@ PROFILE = Page.new(
   modifiers: ["
     user_account = User.find_by_user_id(cookie_hash['user_id'])
     if user_account
-      parameters['username'] = user_account.username
+      parameters['username'] = CGI::escapeHTML(user_account.username)
     end"],http_method: "GET", redirect_criteria: "user_account = User.find_by_user_id(cookie_hash['user_id']); !user_account", redirect_url: "http://localhost:2000/login")
 
 VISITS = Page.new(

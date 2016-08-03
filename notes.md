@@ -10,3 +10,8 @@ However, starting in Rails 4, all cookies are encrypted by default. Decryption r
 Rails refer to the digest at the end of the cookie as being "signed". So not only must you decrypt a cookie to find out what it means, but you also must forge the signature as well.
 
 My solution and Rails 4' solution both uses AES-256 encryption.
+
+== Security Flaw #2 ==
+XSS attacks can occur when you do not properly filter user input. If users are allowed to inject artibrary HTML into their websites, they can use it to do *bad* stuff. Such as steal people's cookies.
+
+Ruby has a method ["CGI::escapeHTML"](http://ruby-doc.org/stdlib-2.0.0/libdoc/cgi/rdoc/CGI.html#method-c-escapeHTML) that can handle this specific issue, and I called it on every section where I expect user input. Rails is much easier in that HTML escaping occurs by default, and you have to intentionally opt-out of it by using the 'html_safe' method.
