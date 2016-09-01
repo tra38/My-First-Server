@@ -1,5 +1,6 @@
 require 'erb'
 require 'ostruct'
+require 'cgi'
 
 class Handler
   attr_reader :pages
@@ -25,7 +26,8 @@ class Handler
       namespace = OpenStruct.new(combined_hash)
       response = ERB.new(page.to_s).result(namespace.instance_eval { binding })
       combined_hash.each do |key, value|
-        response.gsub!("%"+key, value.to_s)
+        escaped_html = CGI::escapeHTML(value.to_s)
+        response.gsub!("%"+key, escaped_html)
       end
       response
     end

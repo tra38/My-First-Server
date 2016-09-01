@@ -5,6 +5,7 @@ require_relative '../users'
 require_relative '../web-finger2'
 
 RSpec.describe "Handler" do
+
 	before do
 		@handler = Handler.new([HOMEPAGE, LOGIN_PAGE_GET, LOGIN_PAGE_POST], ERROR_PAGE)
 		@cookie = Cookie.new("count=1")
@@ -44,6 +45,12 @@ RSpec.describe "Handler" do
 	 it "provides the user with a form, if the user sends a GET Method" do
 	 	page = @handler.page_routing("/login", "GET", {"user" => "mattBaker", "password" => "" }, @cookie)
 	 	expect(page.to_s).to match /let's login/
+	 end
+
+	 it "successfully escapes data" do
+	 	evil_user = User.create_user("<script>alert('Hacked!')</script>", "somethrowawaypassword")
+	 	page = @handler.page_routing("/home", "GET", {}, @cookie)
+	 	expect(page.to_s).to match /&lt;script&gt;/
 	 end
 
 end
