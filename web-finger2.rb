@@ -1,5 +1,4 @@
 require 'gibberish'
-require 'cgi'
 
 HOMEPAGE = Page.new(
   page: %{
@@ -24,7 +23,7 @@ HOMEPAGE = Page.new(
   },
   code: 200, resource: "/home", http_method: "GET",
   modifiers: [%{
-    parameters['user_list'] = USER_TABLE.map { |key, value| "<li>" + CGI::escapeHTML(value.username) + "</li>" }.join('') }])
+    parameters['user_list'] = USER_TABLE.map { |key, value| "<li>" + value.username + "</li>" }.join('') }])
 
 ERROR_PAGE = Page.new(
   page: %{
@@ -66,7 +65,7 @@ PROFILE = Page.new(
   modifiers: ["
     user_account = User.find_by_user_id(cookie_hash['user_id'])
     if user_account
-      parameters['username'] = CGI::escapeHTML(user_account.username)
+      parameters['username'] = user_account.username
     end"],http_method: "GET", redirect_criteria: "user_account = User.find_by_user_id(cookie_hash['user_id']); !user_account", redirect_url: "http://localhost:2000/login")
 
 VISITS = Page.new(
@@ -184,6 +183,24 @@ REGISTER_PAGE_POST = Page.new(
         parameters['registered'] = true
       end
     "],  http_method: "POST")
+
+API = Page.new(
+  page: %{
+    {"user": %username, "count": %user_visits }
+  }, code: 200, resource: "/api/visits",
+  modifiers: ["
+    username = parameters['user']
+    user_account = USER_TABLE[username]
+    if user_account
+      parameters['username'] = username
+      parameters['user_visits'] = user_account.visits
+      binding.pry
+    else
+      parameters['username'] = 'defaultson'
+      parameters['user_visits'] = 0
+    end
+  "], http_method: "GET"
+  )
 
 SECRET_KEY = "my secret key"
 CIPHER = Gibberish::AES.new(SECRET_KEY)
