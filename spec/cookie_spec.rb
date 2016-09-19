@@ -10,6 +10,8 @@ RSpec.describe "Cookie" do
     expect(data["cat"]).to eq("dog")
   end
 
+  # The "new" cookie string is being updated with additional criteria, thereby making a string comparison worthless,
+  # This makes this test unusable unless I come with a different approach. GO GO TDD!
   xit "can generate Set-Cookie headers" do
     string = CIPHER.encrypt("foo=bar; cat=dog")
     cookie = Cookie.new("FirstServerCookie=#{Base64.encode64(string)}")
