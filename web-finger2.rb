@@ -186,15 +186,16 @@ REGISTER_PAGE_POST = Page.new(
 
 API = Page.new(
   page: %{
-    {"user": %username, "count": %user_visits }
-  }, code: 200, resource: "/api/visits",
+    {"user": "%username", "count": %user_visits }
+  }, code: 200, json: true,
+  resource: "/api/visits",
   modifiers: ["
     username = parameters['user']
     user_account = USER_TABLE[username]
     if user_account
       parameters['username'] = username
       parameters['user_visits'] = user_account.visits
-      binding.pry
+      parameters.delete('user')
     else
       parameters['username'] = 'defaultson'
       parameters['user_visits'] = 0

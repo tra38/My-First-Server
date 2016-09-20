@@ -1,5 +1,5 @@
 class Page
-	attr_reader :page, :code, :bytesize, :resource, :modifiers, :http_method, :redirect_criteria, :redirect_url
+	attr_reader :page, :code, :bytesize, :resource, :modifiers, :http_method, :redirect_criteria, :redirect_url, :json
 	attr_accessor :additional_headers
 
 	def initialize(args)
@@ -11,12 +11,17 @@ class Page
 		@modifiers = args[:modifiers]
 		@redirect_criteria = args[:redirect_criteria]
 		@redirect_url = args[:redirect_url]
+		@json = args[:json]
 	end
 
 	def headers
 		headers_array = []
 		headers_array << "HTTP/1.1 #{code}"
-		headers_array << "Content Type: text/html"
+		if json
+			headers_array << "Content Type: application/json"
+		else
+			headers_array << "Content Type: text/html"
+		end
 		headers_array << additional_headers if additional_headers
 		headers_array << "Connection: close"
 		headers_array.join("\r\n")
