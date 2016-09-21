@@ -25,6 +25,7 @@ class Server
 	def send_message
 		request = Request.new(client)
 		parser = Parser.new(request)
+		p request.headers
 		if request.headers["cookie"]
 			cookie = Cookie.new(request.headers["cookie"])
 		else
@@ -37,7 +38,7 @@ class Server
 		resource = parser.resource
 		parameters = parser.parameters
 		http_method = parser.http_method
-		response = handler.page_routing(resource, http_method, parameters, cookie)
+		response = handler.page_routing(resource, http_method, parameters, cookie, request.headers)
 		puts response
 		@client.puts response
 	end

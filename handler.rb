@@ -15,7 +15,7 @@ class Handler
 
 #Elements of this code was inspired by tokland, from StackOverflow.
 #Source: http://stackoverflow.com/a/8293786
-  def page_routing(request, http_method, parameters, cookie)
+  def page_routing(request, http_method, parameters, cookie, request_headers)
     page = @pages[http_method][request]
     if page.redirect?(cookie.hash)
       page.redirect_headers
@@ -24,7 +24,8 @@ class Handler
       page.additional_headers = cookie.headers
       combined_hash = parameters.merge(cookie.hash)
       namespace = OpenStruct.new(combined_hash)
-      response = ERB.new(page.to_s).result(namespace.instance_eval { binding })
+      page_template = page.create_template(request_headers)
+      response = ERB.new(page_template).result(namespace.instance_eval { binding })
       combined_hash.each do |key, value|
         escaped_html = CGI::escapeHTML(value.to_s)
         response.gsub!("%"+key, escaped_html)

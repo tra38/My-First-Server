@@ -186,8 +186,18 @@ REGISTER_PAGE_POST = Page.new(
 
 API = Page.new(
   page: %{
+    <html>
+      <head>
+        <title>%username Visit Count</title>
+      </head>
+      <body>
+        <h1>Visits</h1>
+        <p>%user_visits</p>
+      </body>
+    </html>
+  }, code: 200, json: %{
     {"user": "%username", "count": %user_visits }
-  }, code: 200, json: true,
+  },
   resource: "/api/visits",
   modifiers: ["
     username = parameters['user']
