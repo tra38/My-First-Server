@@ -202,10 +202,10 @@ API = Page.new(
   modifiers: ["
     username = parameters['user']
     user_account = USER_TABLE[username]
+    parameters.delete('user')
     if user_account
       parameters['username'] = username
       parameters['user_visits'] = user_account.visits
-      parameters.delete('user')
     else
       parameters['username'] = 'defaultson'
       parameters['user_visits'] = 0
