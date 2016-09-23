@@ -1,3 +1,37 @@
 #!/usr/bin/env ruby
 
-puts "LONG LIVE THE USER VISITS REVOLUTION!"
+# Most code comes from https://www.tutorialspoint.com/ruby/ruby_socket_programming.htm
+require 'socket'
+require 'json'
+
+if ARGF.argv[0]
+  user_parameter = "?user=#{ARGF.argv[0]}"
+else
+  user_parameter = ""
+end
+
+host = 'localhost'     # The web server
+port = 2000                           # Default HTTP port
+path = "/api/visits#{user_parameter}"                 # The file we want 
+
+# This is the HTTP request we send to fetch a file
+request = "GET #{path} HTTP/1.0\r\nAccept: application/json\r\nConnection:close\r\n\r\n"
+
+socket = TCPSocket.open(host,port)  # Connect to server
+socket.print(request)               # Send request
+response = socket.read              # Read complete response
+# Split response at first blank line into headers and body
+headers,body = response.split("\r\n\n", 2) 
+
+parsed_json = JSON.parse(body)
+
+user = parsed_json["user"]
+count = parsed_json["count"]
+
+if parsed_json["count"] == 1
+  times = "time"
+else
+  times = "times"
+end
+
+puts "#{user} has hit the server #{count} #{times}."
